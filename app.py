@@ -8,7 +8,7 @@ def home():
 
 @app.route('/api/data')
 def data():
-    return jsonify(data=[1, 2, 3, 4, 5])
+    return jsonify(data=[1, 2, 3, 4, 5, 6, 7])
 
 @app.route('/api/hello/<name>')
 def greet(name):
