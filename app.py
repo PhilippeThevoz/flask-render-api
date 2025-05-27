@@ -10,5 +10,10 @@ def home():
 def data():
     return jsonify(data=[1, 2, 3, 4, 5])
 
+@app.route('/api/hello/<name>')
+def greet(name):
+    return jsonify(greeting=f"Hello, {name}!")
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)
+
