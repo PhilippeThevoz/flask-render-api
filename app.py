@@ -54,44 +54,49 @@ BRANCH = "main"
 
 @app.route('/api/filewrite/<path:filename>', methods=['POST'])
 def filewrite(filename):
-    import os
     import base64
 
-    token = "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"
-    repo_owner = "PhilippeThevoz"
-    repo_name = "Tests"
-    branch = "main"
+    try:
+        token = "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"  # Use your valid GitHub token
+        repo_owner = "PhilippeThevoz"
+        repo_name = "Tests"
+        branch = "main"
 
-    headers = {
-        "Authorization": f"token {token}",
-        "Accept": "application/vnd.github+json"
-    }
+        headers = {
+            "Authorization": f"token {token}",
+            "Accept": "application/vnd.github+json"
+        }
 
-    content = request.json.get("content")
-    if not content:
-        return jsonify(error="Missing content"), 400
+        content = request.json.get("content")
+        if not content:
+            return jsonify(error="Missing content"), 400
 
-    encoded_content = base64.b64encode(content.encode("utf-8")).decode("utf-8")
-    api_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{filename}"
+        encoded_content = base64.b64encode(content.encode("utf-8")).decode("utf-8")
+        api_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{filename}"
 
-    # Check if file exists (to get SHA)
-    get_resp = requests.get(api_url, headers=headers)
-    sha = get_resp.json().get("sha") if get_resp.status_code == 200 else None
+        # Check if file exists
+        get_resp = requests.get(api_url, headers=headers)
+        sha = get_resp.json().get("sha") if get_resp.status_code == 200 else None
 
-    payload = {
-        "message": f"Update {filename} via API",
-        "content": encoded_content,
-        "branch": branch
-    }
-    if sha:
-        payload["sha"] = sha
+        payload = {
+            "message": f"Update {filename} via API",
+            "content": encoded_content,
+            "branch": branch
+        }
+        if sha:
+            payload["sha"] = sha
 
-    put_resp = requests.put(api_url, headers=headers, json=payload)
+        put_resp = requests.put(api_url, headers=headers, json=payload)
+        print("📡 GitHub PUT response:", put_resp.status_code, put_resp.text)
 
-    if put_resp.status_code in [200, 201]:
-        return jsonify(message="✅ File written to GitHub", filename=filename)
-    else:
-        return jsonify(error="❌ Failed to write file", details=put_resp.json()), 500
+        if put_resp.status_code in [200, 201]:
+            return jsonify(message="✅ File written to GitHub", filename=filename)
+        else:
+            return jsonify(error="GitHub API error", details=put_resp.json()), 500
+
+    except Exception as e:
+        print("❌ Exception during filewrite:", e)
+        return jsonify(error="Internal server error", details=str(e)), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)
