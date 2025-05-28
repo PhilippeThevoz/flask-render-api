@@ -5,11 +5,11 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return jsonify(message="Hello from Render (PHT....)!")
+    return jsonify(message="Hello from Render (PHT....)! : ")
 
 @app.route('/api/fileread/<filename>')
 def fileread(filename):
-    base_url = "https://raw.githubusercontent.com/PhilippeThevoz/Tests/main/.well-known/"
+    base_url = "https://raw.githubusercontent.com/PhilippeThevoz/Tests/main/DPP/BP_01-sbaincubatorGMEJ3QMK5J4M/"
     file_url = f"{base_url}{filename}"
     print(f"📡 Fetching URL: {file_url}")
 
