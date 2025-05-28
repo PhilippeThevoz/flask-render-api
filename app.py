@@ -11,9 +11,11 @@ def home():
 def fileread(filename):
     base_url = "https://raw.githubusercontent.com/PhilippeThevoz/Tests/main/.well-known/"
     file_url = f"{base_url}{filename}"
+    print(f"📡 Fetching URL: {file_url}")
 
     try:
         response = requests.get(file_url)
+        print(f"🌐 GitHub response status: {response.status_code}")
 
         if response.status_code == 200:
             content = response.text
