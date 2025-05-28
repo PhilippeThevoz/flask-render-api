@@ -47,7 +47,7 @@ import os
 app = Flask(__name__)
 
 # You should use an environment variable or secure store instead
-GITHUB_TOKEN = "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"
+GITHUB_TOKEN = os.environ.get("GITHUB_PHT")
 REPO_OWNER = "PhilippeThevoz"
 REPO_NAME = "Tests"
 BRANCH = "main"
@@ -57,7 +57,7 @@ def filewrite(filename):
     import base64
 
     try:
-        token = "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"  # Use your valid GitHub token
+        token = os.environ.get("GITHUB_PHT")
         repo_owner = "PhilippeThevoz"
         repo_name = "Tests"
         branch = "main"
