@@ -9,8 +9,8 @@ app = Flask(__name__)
 def home():
     return jsonify(message="Hello from Render (PHT....)!")
 
-@app.route('/api/verify1/<prefix>', methods=['POST'])
-def verify1_route(prefix):
+@app.route('/api/verify1/<path=xprefix>', methods=['POST'])
+def verify1_route(xprefix):
     try:
         data = request.get_json()
         file_content = data.get("file_content")
