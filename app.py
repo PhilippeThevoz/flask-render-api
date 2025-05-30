@@ -9,7 +9,6 @@ app = Flask(__name__)
 def home():
     return jsonify(message="Hello from Render (PHT....)!")
 
-@app.route('/verify1/<prefix>')
 @app.route('/verify1/<prefix>', methods=['POST'])
 def verify1_route(prefix):
     try:
